@@ -1,0 +1,9 @@
+firebase-config.js
+.firebase/
+functions/node_modules/
+node_modules/
+h2e-site/node_modules/
+h2e-site/dist/
+*.log
+.DS_Store
+Thumbs.db

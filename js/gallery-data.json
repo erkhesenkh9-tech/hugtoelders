@@ -1,0 +1,83 @@
+[
+  {
+    "title": "Care Package Making Journey",
+    "photos": [
+      {
+        "src": "images/gallery/photo-01.jpg"
+      },
+      {
+        "src": "images/gallery/photo-02.jpg"
+      }
+    ]
+  },
+  {
+    "title": "December 7th Care Packages + Letter Making (Winter Edition)",
+    "photos": [
+      {
+        "src": "images/gallery/photo-03.jpg"
+      },
+      {
+        "src": "images/gallery/photo-04.jpg"
+      },
+      {
+        "src": "images/gallery/photo-05.jpg"
+      }
+    ]
+  },
+  {
+    "title": "September 14th — Care Packages + Letter Making for UCSF Senior Patients",
+    "photos": [
+      {
+        "src": "images/gallery/photo-06.jpg"
+      },
+      {
+        "src": "images/gallery/photo-07.jpg"
+      },
+      {
+        "src": "images/gallery/photo-08.jpg"
+      },
+      {
+        "src": "images/gallery/photo-09.jpg"
+      },
+      {
+        "src": "images/gallery/photo-10.jpg"
+      },
+      {
+        "src": "images/gallery/photo-11.jpg"
+      },
+      {
+        "src": "images/gallery/photo-12.jpg"
+      }
+    ]
+  },
+  {
+    "title": "November 15th, 2025 @ West Portal",
+    "photos": [
+      {
+        "src": "images/gallery/photo-13.jpg"
+      }
+    ]
+  },
+  {
+    "title": "July 4th, 2025 @ 9th & Irving",
+    "photos": [
+      {
+        "src": "images/gallery/photo-14.jpg"
+      },
+      {
+        "src": "images/gallery/photo-15.jpg"
+      },
+      {
+        "src": "images/gallery/photo-16.jpg"
+      }
+    ]
+  },
+  {
+    "title": "June 6th, 2025 @ 9th & Irving",
+    "photos": [
+      {
+        "src": "images/gallery/photo-17.jpg"
+      }
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Keep this list in sync with adminEmails in firebase-config.js
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email in [
+        'hugstoelders@gmail.com'
+      ];
+    }
+
+    match /newsletters/{newsletterId} {
+      allow read: if true;
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasAll(['title', 'dateLabel', 'excerpt', 'link', 'createdAt'])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 200
+        && request.resource.data.dateLabel is string
+        && request.resource.data.excerpt is string
+        && request.resource.data.excerpt.size() <= 1000
+        && request.resource.data.link is string
+        && request.resource.data.createdAt is timestamp;
+      allow update, delete: if false;
+    }
+  }
+}
