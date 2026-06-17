@@ -1069,17 +1069,17 @@ a:hover {
 }
 
 .gallery-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 2vw, 1.75rem);
+  align-items: stretch;
 }
 
 .gallery-item {
   border-radius: var(--radius);
   overflow: hidden;
-  flex: 0 1 260px;
-  max-width: 300px;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
   border: 1px solid var(--pink-100);
   box-shadow: var(--shadow-sm);
