@@ -72,7 +72,7 @@
     e.preventDefault();
     showMessage(loginMessage, 'Signing in...', '');
 
-    const email = document.getElementById('login-email').value.trim();
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
     const password = document.getElementById('login-password').value;
 
     if (!isAdminEmail(email)) {
@@ -84,11 +84,19 @@
       await firebaseServices.auth.signInWithEmailAndPassword(email, password);
       showMessage(loginMessage, '', '');
     } catch (err) {
+      console.error('Admin login error:', err.code, err.message);
       const messages = {
-        'auth/user-not-found': 'No account found. Create this user in Firebase Authentication first.',
-        'auth/wrong-password': 'Incorrect password.',
-        'auth/invalid-credential': 'Invalid email or password.',
-        'auth/too-many-requests': 'Too many attempts. Try again later.'
+        'auth/user-not-found':
+          'No Firebase account exists for this email. In Firebase Console → Authentication → Users → Add user, create this email with a password, then try again.',
+        'auth/wrong-password': 'Incorrect password. Reset it in Firebase Console → Authentication → Users.',
+        'auth/invalid-credential':
+          'Invalid email or password. If this is your first login, create the user in Firebase Console → Authentication → Users → Add user.',
+        'auth/invalid-email': 'That email address is not valid.',
+        'auth/operation-not-allowed':
+          'Email/password sign-in is disabled. In Firebase Console → Authentication → Sign-in method, enable Email/Password.',
+        'auth/unauthorized-domain':
+          'This website domain is not authorized. In Firebase Console → Authentication → Settings → Authorized domains, add your live site URL (e.g. your-site.vercel.app).',
+        'auth/too-many-requests': 'Too many attempts. Try again later or reset the password in Firebase Console.'
       };
       showMessage(loginMessage, messages[err.code] || err.message, 'error');
     }
@@ -131,6 +139,16 @@
   function init() {
     if (!getConfig()) {
       showConfigWarning();
+      return;
+    }
+
+    if (!window.firebaseConfig.authDomain) {
+      showMessage(
+        loginMessage,
+        'Firebase authDomain is missing. Add FIREBASE_AUTH_DOMAIN (or FIREBASE_PROJECT_ID) in Vercel/Netlify env vars and redeploy.',
+        'error'
+      );
+      showLogin();
       return;
     }
 

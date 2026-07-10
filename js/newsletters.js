@@ -98,7 +98,7 @@
 
   function isAdminEmail(email) {
     const allowed = window.adminEmails || [];
-    return allowed.includes(email);
+    return allowed.includes(String(email || '').trim().toLowerCase());
   }
 
   window.H2ENewsletters = {
