@@ -1,0 +1,18 @@
+[build]
+  command = "node scripts/generate-firebase-config.js"
+  publish = "."
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/gallery"
+  to = "/gallery.html"
+  status = 200
+
+[[redirects]]
+  from = "/newsletters"
+  to = "/newsletters.html"
+  status = 200

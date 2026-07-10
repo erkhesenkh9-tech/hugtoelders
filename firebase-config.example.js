@@ -9,7 +9,7 @@ window.firebaseConfig = {
   appId: 'YOUR_APP_ID'
 };
 
-// Emails allowed to post newsletters (must match Firestore rules in firestore.rules)
+// Emails allowed to post newsletters (must match firestore.rules and firebase.public.json)
 window.adminEmails = [
   'hugstoelders@gmail.com'
 ];

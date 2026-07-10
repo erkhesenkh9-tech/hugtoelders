@@ -17,7 +17,7 @@
   <header class="site-header">
     <nav class="nav container">
       <a href="index.html" class="logo">
-        <span class="logo-icon">🌸</span>
+        <span class="logo-icon">💌</span>
         <span class="logo-text">H2E Admin</span>
       </a>
       <a href="index.html" class="btn btn-outline btn-sm">← Back to Site</a>
@@ -50,7 +50,7 @@
         <div class="admin-header-row">
           <div>
             <h1>Post a Newsletter</h1>
-            <p class="admin-desc">Only the 3 most recent newsletters are kept on the website. Older ones are removed automatically.</p>
+            <p class="admin-desc">Published newsletters appear on the website instantly — the newest on the home page, older ones in the archive.</p>
           </div>
           <div class="admin-user">
             <span id="user-email"></span>
@@ -84,7 +84,7 @@
       </div>
 
       <div class="admin-card">
-        <h2>Currently Live (max 3)</h2>
+        <h2>Published Newsletters</h2>
         <div id="admin-newsletter-list" class="admin-newsletter-list">
           <p class="newsletter-loading">Loading...</p>
         </div>
@@ -93,7 +93,7 @@
 
     <section id="config-warning" class="admin-card admin-warning" hidden>
       <h2>Firebase Not Configured</h2>
-      <p>Copy <code>firebase-config.example.js</code> to <code>firebase-config.js</code> and add your Firebase project credentials. See <code>FIREBASE_SETUP.md</code> for step-by-step instructions.</p>
+      <p>Firebase is not connected. Run <code>node scripts/generate-firebase-config.js</code> locally, or redeploy on Netlify after pushing <code>firebase.public.json</code>. See <code>FIREBASE_SETUP.md</code>.</p>
     </section>
   </main>
 

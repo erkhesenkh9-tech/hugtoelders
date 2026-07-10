@@ -1,6 +1,6 @@
 # Firebase Setup Guide — Hugs to Elders Newsletters
 
-This guide walks you through connecting Firebase so **only authorized H2E board members** can post newsletters, and the **public website shows only the 3 most recent** (older ones are deleted automatically).
+This guide walks you through connecting Firebase so **authorized H2E board members** can post newsletters from a simple admin page — **no manual website editing required**.
 
 ---
 
@@ -8,10 +8,67 @@ This guide walks you through connecting Firebase so **only authorized H2E board 
 
 | Feature | How it works |
 |--------|----------------|
-| **Public site** | Home page + Newsletters section load the 3 newest items from Firestore |
-| **Admin page** | `/admin.html` — sign in to publish newsletters |
+| **Home page** | Shows only the **newest** newsletter |
+| **Newsletters page** (`/newsletters.html`) | Archive of all **older** newsletters + subscribe form |
+| **Admin page** (`/admin.html`) | Board members sign in and publish a new issue each month |
 | **Access control** | Only emails listed in `firestore.rules` and `firebase-config.js` can post |
-| **Auto cleanup** | Cloud Function deletes newsletters beyond the 3 most recent |
+| **Archive** | All past newsletters are **kept forever** (nothing is auto-deleted) |
+
+### Recommended workflow each month
+
+1. Design the full newsletter in **Canva** or **Google Docs** (free, familiar tools).
+2. Export or share it as a **public link** (Google Drive, Canva share link, or PDF URL).
+3. Go to **`/admin.html`**, sign in, and fill in the title, summary, and link.
+4. Click **Publish** — it appears on the website immediately.
+
+You never touch HTML or code when posting.
+
+---
+
+## Why Firebase?
+
+Your site already uses **Firebase** (Google's free backend) as the "outside source" that stores newsletters and serves them to the website. Alternatives like Mailchimp or Substack are great for *emailing* subscribers, but they don't automatically update your website unless you build a custom integration. Firebase is the simplest fit because:
+
+- **Free tier** is enough for a student org site
+- **Admin page is already built** (`admin.html`)
+- **Only trusted board emails** can publish
+- **Works with Canva / Google Drive links** for the full newsletter PDF
+
+---
+
+## Netlify hosting (https://hugtoelders.netlify.app)
+
+Netlify builds from GitHub. Firebase config is generated at build time from `firebase.public.json`.
+
+### One-time: authorize Netlify in Firebase
+
+1. [Firebase Console](https://console.firebase.google.com/project/hugtoelders/authentication/settings) → **Authentication** → **Settings** → **Authorized domains**
+2. Click **Add domain**
+3. Add: `hugtoelders.netlify.app`
+4. Save
+
+Without this step, **admin login will fail** on Netlify (even with correct password).
+
+### Deploy updates to Netlify
+
+Push to GitHub — Netlify rebuilds automatically:
+
+```bash
+git add firebase.public.json netlify.toml scripts/generate-firebase-config.js firestore.rules admin.html
+git commit -m "Fix Firebase config for Netlify and admin"
+git push
+```
+
+The build runs `node scripts/generate-firebase-config.js` which creates `firebase-config.js` with your real Firebase keys.
+
+### Add admins
+
+Edit `adminEmails` in `firebase.public.json` and the matching list in `firestore.rules`, then:
+
+```bash
+firebase deploy --only firestore:rules
+git add firebase.public.json firestore.rules && git commit -m "Add admin email" && git push
+```
 
 ---
 
@@ -111,15 +168,7 @@ firebase use --add
 
 Select your `hugstoelders` project when prompted.
 
-### Install Cloud Functions dependencies
-
-```bash
-cd functions
-npm install
-cd ..
-```
-
-### Deploy everything
+### Deploy
 
 ```bash
 firebase deploy
@@ -127,23 +176,22 @@ firebase deploy
 
 This deploys:
 - **Firestore security rules** — public read, admin-only write
-- **Cloud Function `trimNewsletters`** — keeps only 3 newsletters
 - **Website hosting** — your site at `https://YOUR_PROJECT_ID.web.app`
 
 ---
 
 ## Step 7: Post your first newsletter
 
-1. Open **https://YOUR_PROJECT_ID.web.app/admin.html** (or `http://localhost:3456/admin.html` locally)
+1. Open **https://YOUR_PROJECT_ID.web.app/admin.html**
 2. Sign in with an authorized email/password
 3. Fill in:
    - **Date Label** — e.g. `June 2026`
    - **Title** — e.g. `Summer Volunteer Drive`
-   - **Summary** — short text shown on the home page
+   - **Summary** — short text shown on the home page card
    - **Link** — Google Drive, Canva, or PDF URL for the full newsletter
 4. Click **Publish Newsletter**
 
-The newsletter appears on the home page and Newsletters section. When you publish a 4th newsletter, the oldest is removed automatically.
+The newest issue appears on the **home page**. When you publish again next month, the previous one moves to the **Newsletter Archive** on `/newsletters.html`.
 
 ---
 
@@ -158,8 +206,6 @@ npx serve .
 
 3. Visit `http://localhost:3000` (public site) and `http://localhost:3000/admin.html` (admin)
 
-Firestore and Auth work from localhost once `firebase-config.js` is configured (add `localhost` is allowed by default in Firebase).
-
 ---
 
 ## File overview
@@ -169,10 +215,10 @@ Firestore and Auth work from localhost once `firebase-config.js` is configured (
 | `firebase-config.js` | Your Firebase credentials (do not commit — in `.gitignore`) |
 | `firebase-config.example.js` | Template to copy |
 | `firestore.rules` | Who can read/write newsletters |
-| `functions/index.js` | Auto-deletes newsletters beyond the 3 newest |
 | `admin.html` + `admin.js` | Admin login & publish form |
 | `js/newsletters.js` | Shared fetch/render logic |
-| `index.html` | Public site — loads 3 newest newsletters |
+| `index.html` | Home page — shows 1 newest newsletter |
+| `newsletters.html` | Archive page — all older newsletters + subscribe |
 
 ---
 
@@ -197,9 +243,6 @@ firebase deploy --only firestore:rules,hosting
 **"Permission denied" when publishing**  
 → Your signed-in email must be in both `adminEmails` and `firestore.rules`. Redeploy rules: `firebase deploy --only firestore:rules`
 
-**Newsletters not trimming to 3**  
-→ Deploy functions: `firebase deploy --only functions`. Check Firebase Console → Functions → Logs.
-
 **Blank newsletter section**  
 → Open browser DevTools (F12) → Console for errors. Confirm Firestore has documents in the `newsletters` collection.
 
@@ -218,10 +261,9 @@ firebase deploy --only firestore:rules,hosting
 ```bash
 firebase login                          # Sign in to Firebase CLI
 firebase use --add                      # Link local project to Firebase
-firebase deploy                         # Deploy rules, functions, and hosting
+firebase deploy                         # Deploy rules and hosting
 firebase deploy --only hosting          # Deploy website only
-firebase deploy --only firestore:rules    # Deploy security rules only
-firebase deploy --only functions        # Deploy trim function only
+firebase deploy --only firestore:rules  # Deploy security rules only
 ```
 
 For questions, contact the H2E tech lead or see [Firebase Documentation](https://firebase.google.com/docs).

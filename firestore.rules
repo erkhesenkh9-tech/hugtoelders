@@ -7,10 +7,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Keep this list in sync with adminEmails in firebase-config.js
+    // Keep this list in sync with adminEmails in firebase.public.json
     function isAdmin() {
       return isSignedIn() && request.auth.token.email in [
-        'hugstoelders@gmail.com'
+        'hugstoelders@gmail.com',
+        'erkhesenkh9@gmail.com'
       ];
     }
 
