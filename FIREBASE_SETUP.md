@@ -38,7 +38,25 @@ Your site already uses **Firebase** (Google's free backend) as the "outside sour
 
 ## Netlify hosting (https://hugtoelders.netlify.app)
 
-Netlify builds from GitHub. Firebase config is generated at build time from `firebase.public.json`.
+Netlify builds from GitHub. Firebase config is generated at build time from **environment variables** (keys are never committed to Git — Netlify blocks that).
+
+### One-time: add environment variables in Netlify
+
+1. Open [Netlify](https://app.netlify.com/) → your **hugtoelders** site
+2. Go to **Site configuration** → **Environment variables** → **Add a variable**
+3. Add each of these (copy values from Firebase Console → Project settings → Your apps):
+
+| Variable | Value |
+|----------|--------|
+| `FIREBASE_API_KEY` | Your Firebase `apiKey` |
+| `FIREBASE_AUTH_DOMAIN` | `hugtoelders.firebaseapp.com` |
+| `FIREBASE_PROJECT_ID` | `hugtoelders` |
+| `FIREBASE_STORAGE_BUCKET` | `hugtoelders.firebasestorage.app` |
+| `FIREBASE_MESSAGING_SENDER_ID` | `1067330771792` |
+| `FIREBASE_APP_ID` | `1:1067330771792:web:f2378f74f9f280053c6a55` |
+| `FIREBASE_ADMIN_EMAILS` | `hugstoelders@gmail.com,erkhesenkh9@gmail.com` |
+
+4. Save, then trigger a new deploy (**Deploys** → **Trigger deploy** → **Deploy site**)
 
 ### One-time: authorize Netlify in Firebase
 
@@ -49,25 +67,20 @@ Netlify builds from GitHub. Firebase config is generated at build time from `fir
 
 Without this step, **admin login will fail** on Netlify (even with correct password).
 
-### Deploy updates to Netlify
-
-Push to GitHub — Netlify rebuilds automatically:
+### Local development
 
 ```bash
-git add firebase.public.json netlify.toml scripts/generate-firebase-config.js firestore.rules admin.html
-git commit -m "Fix Firebase config for Netlify and admin"
-git push
+copy firebase.public.example.json firebase.public.json
+# Edit firebase.public.json with your real values (this file is gitignored)
+node scripts/generate-firebase-config.js
 ```
-
-The build runs `node scripts/generate-firebase-config.js` which creates `firebase-config.js` with your real Firebase keys.
 
 ### Add admins
 
-Edit `adminEmails` in `firebase.public.json` and the matching list in `firestore.rules`, then:
+Edit `FIREBASE_ADMIN_EMAILS` in Netlify env vars and the matching list in `firestore.rules`, then:
 
 ```bash
 firebase deploy --only firestore:rules
-git add firebase.public.json firestore.rules && git commit -m "Add admin email" && git push
 ```
 
 ---
