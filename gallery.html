@@ -7,7 +7,7 @@
   <title>Photo Gallery | Hugs to Elders</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
   <header class="site-header header-visible">
     <nav class="nav container">
       <a href="index.html" class="logo">
-        <span class="logo-icon">🌸</span>
+        <span class="logo-icon">💌</span>
         <span class="logo-text">Hugs to Elders</span>
       </a>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -26,7 +26,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="index.html#mission">Mission</a></li>
         <li><a href="index.html#board">Our Board</a></li>
-        <li><a href="index.html#newsletters">Newsletters</a></li>
+        <li><a href="newsletters.html">Newsletters</a></li>
         <li><a href="gallery.html" aria-current="page">Gallery</a></li>
         <li><a href="index.html#contact" class="nav-cta">Contact & Donate</a></li>
       </ul>
@@ -34,32 +34,26 @@
   </header>
 
   <main>
-    <section class="gallery-page-hero section">
+    <section class="gallery section gallery-page">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header subpage-header">
           <span class="section-label">Moments</span>
           <h1>Photo Gallery</h1>
           <p class="section-desc">Highlights from our events, bake sales, care packages, and volunteer days.</p>
         </div>
-      </div>
-    </section>
-
-    <section class="gallery section gallery-page">
-      <div class="container">
         <div id="gallery-albums" class="gallery-albums" aria-live="polite">
           <p class="gallery-loading">Loading photos…</p>
         </div>
         <div class="gallery-page-back">
-          <a href="index.html#gallery" class="btn btn-outline">← Back to Home</a>
+          <a href="index.html" class="btn btn-outline">← Back to Home</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer site-footer--plain">
     <div class="container footer-content">
       <div class="footer-brand">
-        <span class="logo-icon">🌸</span>
         <span>Hugs to Elders</span>
       </div>
       <p class="footer-tagline">Spreading warmth & joy to seniors, one hug at a time.</p>

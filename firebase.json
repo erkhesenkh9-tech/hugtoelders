@@ -3,11 +3,8 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "functions": {
-    "source": "functions",
-    "codebase": "default"
-  },
   "hosting": {
+    "site": "hugtoelders",
     "public": ".",
     "ignore": [
       "firebase.json",
@@ -25,6 +22,10 @@
       {
         "source": "/gallery",
         "destination": "/gallery.html"
+      },
+      {
+        "source": "/newsletters",
+        "destination": "/newsletters.html"
       }
     ]
   }

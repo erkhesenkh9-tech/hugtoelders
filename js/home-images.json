@@ -1,19 +1,19 @@
 {
   "welcome": [
     {
-      "slug": "bake-sale-9th-irving",
-      "caption": "H2E's First Bake Sale @ 9th & Irving",
-      "src": "images/home/bake-sale-9th-irving.jpg"
-    },
-    {
-      "slug": "ucsf-care-package",
-      "caption": "UCSF Care Package Delivery",
-      "src": "images/home/ucsf-care-package.jpg"
+      "slug": "care-package-dropoff",
+      "caption": "Care Package Drop-Off",
+      "src": "images/home/care-package-dropoff.jpg"
     },
     {
       "slug": "ucsf-gerinews",
       "caption": "Featured in UCSF GeriNews",
       "src": "images/home/ucsf-gerinews.jpg"
+    },
+    {
+      "slug": "sfpl-group",
+      "caption": "Our Team @ SFPL",
+      "src": "images/home/sfpl-group.jpg"
     }
   ],
   "comingSoon": [
@@ -28,29 +28,14 @@
       "src": "images/home/letters-from-h2e.jpg"
     },
     {
-      "slug": "letter-making",
-      "caption": "Letter Making Event",
-      "src": "images/home/letter-making.jpg"
-    },
-    {
-      "slug": "first-volunteering",
-      "caption": "1st Volunteering Event",
-      "src": "images/home/first-volunteering.jpg"
+      "slug": "sfpl-event",
+      "caption": "SFPL Packaging Event",
+      "src": "images/home/sfpl-event.jpg"
     },
     {
       "slug": "bracelet-making",
       "caption": "Bracelet making",
       "src": "images/home/bracelet-making.jpg"
-    },
-    {
-      "slug": "origami-seniors",
-      "caption": "Making Origami",
-      "src": "images/home/origami-seniors.jpg"
-    },
-    {
-      "slug": "bake-sale",
-      "caption": "Bake Sale!",
-      "src": "images/home/bake-sale.jpg"
     },
     {
       "slug": "bake-sale-goodies",

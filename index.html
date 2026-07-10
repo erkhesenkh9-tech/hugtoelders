@@ -244,9 +244,22 @@
                 <li>Materials for letter-making & craft events</li>
                 <li>Bake sale supplies & event costs</li>
               </ul>
+              <a href="mailto:hugstoelders@gmail.com?subject=H2E%20Donation%20Inquiry" class="btn btn-primary btn-full">Donate or Learn More</a>
             </div>
           </div>
-          <form class="contact-form" id="contact-form" data-reveal="right">
+          <form
+            class="contact-form"
+            id="contact-form"
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            data-reveal="right"
+          >
+            <input type="hidden" name="form-name" value="contact">
+            <p hidden aria-hidden="true">
+              <label>Don't fill this out: <input name="bot-field"></label>
+            </p>
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Full Name</label>
@@ -262,20 +275,9 @@
               <select id="subject" name="subject" required>
                 <option value="">Select an option</option>
                 <option value="volunteer">Volunteering</option>
-                <option value="donate">Making a Donation</option>
                 <option value="partner">Partnership / Collaboration</option>
                 <option value="general">General Inquiry</option>
               </select>
-            </div>
-            <div class="form-group donation-amount" id="donation-group" hidden>
-              <label for="amount">Donation Amount (USD)</label>
-              <div class="amount-options">
-                <button type="button" class="amount-btn" data-amount="10">$10</button>
-                <button type="button" class="amount-btn" data-amount="25">$25</button>
-                <button type="button" class="amount-btn" data-amount="50">$50</button>
-                <button type="button" class="amount-btn" data-amount="100">$100</button>
-              </div>
-              <input type="number" id="amount" name="amount" min="1" placeholder="Or enter custom amount">
             </div>
             <div class="form-group">
               <label for="message">Message</label>
@@ -305,7 +307,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="js/firebase-setup.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="js/home.js"></script>
   <script src="js/newsletters.js"></script>
   <script src="script.js"></script>

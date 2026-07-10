@@ -2,7 +2,7 @@
  * Shared Firebase + newsletter helpers for public site and admin panel.
  */
 (function () {
-  const MAX_DISPLAY = 3;
+  const HOME_DISPLAY = 1;
 
   function getConfig() {
     if (!window.firebaseConfig || window.firebaseConfig.apiKey === 'YOUR_API_KEY') {
@@ -78,16 +78,36 @@
     }));
   }
 
+  async function fetchAllNewsletters(db) {
+    const snapshot = await db
+      .collection('newsletters')
+      .orderBy('createdAt', 'desc')
+      .get();
+
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  }
+
+  /** All newsletters except the newest (shown on the home page). */
+  async function fetchArchiveNewsletters(db) {
+    const all = await fetchAllNewsletters(db);
+    return all.slice(HOME_DISPLAY);
+  }
+
   function isAdminEmail(email) {
     const allowed = window.adminEmails || [];
     return allowed.includes(email);
   }
 
   window.H2ENewsletters = {
-    MAX_DISPLAY,
+    HOME_DISPLAY,
     getConfig,
     initFirebase,
     fetchLatestNewsletters,
+    fetchAllNewsletters,
+    fetchArchiveNewsletters,
     renderNewsletterGrid,
     isAdminEmail,
     escapeHtml

@@ -1,5 +1,5 @@
 (function () {
-  const { getConfig, initFirebase, fetchLatestNewsletters, isAdminEmail, escapeHtml } = window.H2ENewsletters;
+  const { getConfig, initFirebase, fetchAllNewsletters, isAdminEmail, escapeHtml } = window.H2ENewsletters;
 
   const loginSection = document.getElementById('login-section');
   const dashboardSection = document.getElementById('dashboard-section');
@@ -47,7 +47,7 @@
     adminList.innerHTML = '<p class="newsletter-loading">Loading...</p>';
 
     try {
-      const items = await fetchLatestNewsletters(firebaseServices.db, 3);
+      const items = await fetchAllNewsletters(firebaseServices.db);
 
       if (!items.length) {
         adminList.innerHTML = '<p class="newsletter-empty">No newsletters published yet.</p>';
@@ -109,7 +109,7 @@
 
     try {
       await firebaseServices.db.collection('newsletters').add(data);
-      showMessage(publishMessage, 'Published! Older newsletters are removed automatically (keeping the 3 newest).', 'success');
+      showMessage(publishMessage, 'Published! It will appear on the home page (newest) and past issues stay in the archive.', 'success');
       newsletterForm.reset();
       setTimeout(loadAdminNewsletters, 1500);
     } catch (err) {

@@ -1,61 +1,77 @@
 // ===== Board Members =====
 // 2025-2026 board — from https://sites.google.com/view/hugstoelders/our-board
-const boardMembers = [
+// Layout: 2 Co-Presidents, then 3, then 3
+const boardRows = [
   {
-    name: 'Aubrey Socarras',
-    role: 'Co-President',
-    gradYear: '2027',
-    school: 'Lowell HS',
-    photo: 'images/board/aubrey-socarras.jpg'
+    columns: 2,
+    members: [
+      {
+        name: 'Aubrey Socarras',
+        role: 'Co-President',
+        gradYear: '2027',
+        school: 'Lowell HS',
+        photo: 'images/board/aubrey-socarras.jpg'
+      },
+      {
+        name: 'Fiona Liang',
+        role: 'Co-President',
+        gradYear: '2027',
+        school: 'Lowell HS',
+        photo: 'images/board/fiona-liang.jpg'
+      }
+    ]
   },
   {
-    name: 'Fiona Liang',
-    role: 'Co-President',
-    gradYear: '2027',
-    school: 'Lowell HS',
-    photo: 'images/board/fiona-liang.jpg'
+    columns: 3,
+    members: [
+      {
+        name: 'Ada Kwan',
+        role: 'Human Resources (HR)',
+        gradYear: '2027',
+        school: 'George Washington HS',
+        photo: 'images/board/ada-kwan.jpg'
+      },
+      {
+        name: 'Vickie Yee',
+        role: 'Human Resources (HR)',
+        gradYear: '2027',
+        school: 'Lowell HS',
+        photo: 'images/board/vickie-yee.jpg'
+      },
+      {
+        name: 'Anamaria Tapus',
+        role: 'Treasurer',
+        gradYear: '2027',
+        school: 'Lowell HS',
+        photo: 'images/board/anamaria-tapus.jpg'
+      }
+    ]
   },
   {
-    name: 'Ada Kwan',
-    role: 'Human Resources (HR)',
-    gradYear: '2027',
-    school: 'George Washington HS',
-    photo: 'images/board/ada-kwan.jpg'
-  },
-  {
-    name: 'Vickie Yee',
-    role: 'Human Resources (HR)',
-    gradYear: '2027',
-    school: 'Lowell HS',
-    photo: 'images/board/vickie-yee.jpg'
-  },
-  {
-    name: 'Anamaria Tapus',
-    role: 'Treasurer',
-    gradYear: '2027',
-    school: 'Lowell HS',
-    photo: 'images/board/anamaria-tapus.jpg'
-  },
-  {
-    name: 'Laura Ly',
-    role: 'Public Relations (PR)',
-    gradYear: '2027',
-    school: 'Lowell HS',
-    photo: 'images/board/laura-ly.jpg'
-  },
-  {
-    name: 'Kaitlyn Hau',
-    role: 'Co-Public Relations (PR)',
-    gradYear: '2027',
-    school: 'Lowell HS',
-    photo: 'images/board/kaitlyn-hau.jpg'
-  },
-  {
-    name: 'Chloe Liang',
-    role: 'Website Manager/Historian',
-    gradYear: '2026',
-    school: 'Abraham Lincoln HS',
-    photo: 'images/board/chloe-liang.jpg'
+    columns: 3,
+    members: [
+      {
+        name: 'Laura Ly',
+        role: 'Public Relations (PR)',
+        gradYear: '2027',
+        school: 'Lowell HS',
+        photo: 'images/board/laura-ly.jpg'
+      },
+      {
+        name: 'Kaitlyn Hau',
+        role: 'Co-Public Relations (PR)',
+        gradYear: '2027',
+        school: 'Lowell HS',
+        photo: 'images/board/kaitlyn-hau.jpg'
+      },
+      {
+        name: 'Chloe Liang',
+        role: 'Website Manager / Historian',
+        gradYear: '2026',
+        school: 'Abraham Lincoln HS',
+        photo: 'images/board/chloe-liang.jpg'
+      }
+    ]
   }
 ];
 
@@ -87,6 +103,9 @@ function initPageReveal() {
     document.querySelector('.site-header')?.classList.add('header-visible');
   }, 1600);
 
+  // Failsafe — always reveal the page even if the exit animation doesn't fire
+  setTimeout(finishReveal, 3500);
+
   overlay.addEventListener('transitionend', (e) => {
     if (e.propertyName === 'transform') {
       document.body.classList.add('page-loaded');
@@ -96,7 +115,7 @@ function initPageReveal() {
 }
 
 function initHeroReveal() {
-  const items = document.querySelectorAll('.hero-tag, .hero h1, .hero-subtitle, .hero-actions');
+  const items = document.querySelectorAll('.hero-tag, .hero h1, .hero-subtitle, .hero-actions, .hero-stats');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   items.forEach((el, i) => {
@@ -115,19 +134,15 @@ let revealObserver = null;
 const REVEAL_SELECTORS = [
   '.section-header',
   '.welcome-text',
-  '.welcome-impact',
   '.welcome-photo-card',
   '.coming-soon-title',
   '.instagram-link',
+  '.newsletter-card',
+  '.home-newsletters-cta',
   '.mission-card',
   '.mission-story',
+  '.board-row',
   '.board-card',
-  '.newsletter-card',
-  '.gallery-item',
-  '.gallery-album',
-  '.newsletter-subscribe',
-  '.home-newsletters-cta',
-  '.gallery-cta',
   '.contact-info > *',
   '.contact-form',
   '.site-footer .container > *'
@@ -142,7 +157,21 @@ function registerRevealElements(root = document) {
 
     el.classList.add('reveal');
 
-    if (el.matches('.mission-card, .board-card, .gallery-item, .newsletter-card, .welcome-photo-card')) {
+    // Directional variant: explicit data-reveal wins, otherwise assign by type
+    const explicit = el.dataset.reveal;
+    if (explicit) {
+      el.classList.add(`reveal-${explicit}`);
+    } else if (el.matches('.gallery-item, .welcome-photo-card')) {
+      el.classList.add('reveal-zoom');
+    } else if (el.matches('.board-card')) {
+      const siblings = Array.from(el.parentElement?.children || []);
+      const pos = siblings.indexOf(el) % 3;
+      el.classList.add(pos === 0 ? 'reveal-left' : pos === 2 ? 'reveal-right' : 'reveal-zoom');
+    } else if (el.matches('.newsletter-card')) {
+      el.classList.add('reveal-tilt');
+    }
+
+    if (el.matches('.mission-card, .board-card, .welcome-photo-card, .newsletter-card')) {
       const siblings = el.parentElement?.querySelectorAll(':scope > .reveal:not(.is-visible)') || [];
       const index = Array.from(siblings).indexOf(el);
       el.style.setProperty('--reveal-delay', `${index * 0.1}s`);
@@ -181,39 +210,41 @@ function initScrollReveal() {
 }
 
 // ===== Render Board =====
-function renderBoard() {
-  const grid = document.getElementById('board-grid');
-  if (!grid) return;
-
-  grid.innerHTML = boardMembers.map(member => `
+function renderBoardCard(member) {
+  return `
     <article class="board-card">
       <div class="board-photo">
-        <img src="${member.photo}" alt="${member.name}" loading="lazy" referrerpolicy="no-referrer">
+        <img src="${member.photo}" alt="${member.name}" loading="lazy">
       </div>
-      <h3 class="board-role">${member.role}</h3>
-      <p class="board-name">${member.name}</p>
-      <p class="board-detail">Class of ${member.gradYear}</p>
-      <p class="board-detail">School: ${member.school}</p>
+      <div class="board-info">
+        <p class="board-role">${member.role}</p>
+        <h3 class="board-name">${member.name}</h3>
+        <ul class="board-meta">
+          <li><span class="board-meta-label">Class</span> ${member.gradYear}</li>
+          <li><span class="board-meta-label">School</span> ${member.school}</li>
+        </ul>
+      </div>
     </article>
-  `).join('');
-
-  registerRevealElements(grid);
+  `;
 }
 
-// ===== Render Gallery Preview (home page) =====
-function registerGalleryReveal(root) {
+function renderBoard() {
+  const root = document.getElementById('board-groups');
+  if (!root) return;
+
+  root.innerHTML = boardRows.map((row) => `
+    <div class="board-row board-row--${row.columns} reveal">
+      ${row.members.map(renderBoardCard).join('')}
+    </div>
+  `).join('');
+
   registerRevealElements(root);
-  root.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
+  root.querySelectorAll('.board-card.reveal:not(.is-visible), .board-row.reveal:not(.is-visible)').forEach((el) => {
     revealObserver?.observe(el);
   });
 }
 
-async function renderGalleryPreview() {
-  const root = document.getElementById('gallery-preview');
-  if (!root || !window.H2EGallery) return;
-  await window.H2EGallery.renderPreview(root, registerGalleryReveal);
-}
-
+// ===== Render Home Photos =====
 function registerHomeReveal(root) {
   registerRevealElements(root);
   root.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
@@ -233,22 +264,15 @@ async function renderHomePhotos() {
   );
 }
 
-// ===== Load Newsletters from Firebase =====
-async function loadNewslettersFromFirebase() {
-  const homeGrid = document.getElementById('home-newsletter-grid');
-  const fullGrid = document.getElementById('newsletter-grid');
-  const { getConfig, initFirebase, fetchLatestNewsletters, renderNewsletterGrid, MAX_DISPLAY } = window.H2ENewsletters;
+// ===== Load Latest Newsletter on Home =====
+async function loadHomeNewsletter() {
+  const preview = document.getElementById('home-newsletter-preview');
+  const { getConfig, initFirebase, fetchLatestNewsletters, renderNewsletterGrid, HOME_DISPLAY } = window.H2ENewsletters;
 
-  const showError = (message) => {
-    const html = `<p class="newsletter-error">${message}</p>`;
-    if (homeGrid) homeGrid.innerHTML = html;
-    if (fullGrid) fullGrid.innerHTML = html;
-  };
+  if (!preview || !window.H2ENewsletters) return;
 
   if (!getConfig()) {
-    const msg = 'Newsletters will appear here once Firebase is connected. See FIREBASE_SETUP.md.';
-    if (homeGrid) homeGrid.innerHTML = `<p class="newsletter-empty">${msg}</p>`;
-    if (fullGrid) fullGrid.innerHTML = `<p class="newsletter-empty">${msg}</p>`;
+    preview.innerHTML = '<p class="newsletter-empty">Newsletters will appear here once Firebase is connected.</p>';
     return;
   }
 
@@ -256,14 +280,15 @@ async function loadNewslettersFromFirebase() {
   if (!services) return;
 
   try {
-    const items = await fetchLatestNewsletters(services.db, MAX_DISPLAY);
-    renderNewsletterGrid(homeGrid, items);
-    renderNewsletterGrid(fullGrid, items);
-    registerRevealElements(homeGrid);
-    registerRevealElements(fullGrid);
+    const items = await fetchLatestNewsletters(services.db, HOME_DISPLAY);
+    renderNewsletterGrid(preview, items);
+    registerRevealElements(preview);
+    preview.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
+      revealObserver?.observe(el);
+    });
   } catch (err) {
-    console.error('Failed to load newsletters:', err);
-    showError('Could not load newsletters. Please try again later.');
+    console.error('Failed to load home newsletter:', err);
+    preview.innerHTML = '<p class="newsletter-error">Could not load newsletter. Please try again later.</p>';
   }
 }
 
@@ -285,82 +310,65 @@ function initNav() {
   });
 }
 
-// ===== Donation Amount Toggle =====
-function initDonationToggle() {
-  const subject = document.getElementById('subject');
-  const donationGroup = document.getElementById('donation-group');
-  const amountInput = document.getElementById('amount');
-  const amountBtns = document.querySelectorAll('.amount-btn');
-
-  subject?.addEventListener('change', () => {
-    const showDonation = subject.value === 'donate';
-    donationGroup.hidden = !showDonation;
-  });
-
-  amountBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      amountBtns.forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      if (amountInput) amountInput.value = btn.dataset.amount;
-    });
-  });
-}
-
 // ===== Form Handling =====
+const SUBJECT_LABELS = {
+  volunteer: 'Volunteering',
+  partner: 'Partnership / Collaboration',
+  general: 'General Inquiry'
+};
+
 function initForms() {
   const contactForm = document.getElementById('contact-form');
-  const subscribeForm = document.getElementById('subscribe-form');
 
-  contactForm?.addEventListener('submit', (e) => {
+  contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = document.getElementById('contact-message');
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    if (msg) {
+      msg.textContent = 'Sending…';
+      msg.className = 'form-note';
+    }
+    if (submitBtn) submitBtn.disabled = true;
+
     const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
+    const interest = formData.get('subject');
+    formData.set('interest', SUBJECT_LABELS[interest] || interest);
 
-    // Opens email client with form data — replace with Formspree, Netlify Forms, or backend
-    const subject = encodeURIComponent(`H2E ${data.subject}: Message from ${data.name}`);
-    let body = `Name: ${data.name}%0D%0AEmail: ${data.email}%0D%0AInterest: ${data.subject}%0D%0A`;
-    if (data.amount) body += `Donation Amount: $${data.amount}%0D%0A`;
-    body += `%0D%0AMessage:%0D%0A${encodeURIComponent(data.message)}`;
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      });
 
-    window.location.href = `mailto:hugstoelders@gmail.com?subject=${subject}&body=${body}`;
+      if (!response.ok) throw new Error('Submit failed');
 
-    if (msg) {
-      msg.textContent = 'Opening your email app… If it didn\'t open, email us at hugstoelders@gmail.com';
-      msg.className = 'form-note success';
+      if (msg) {
+        msg.textContent = 'Thanks! Your message was sent — we\'ll get back to you soon.';
+        msg.className = 'form-note success';
+      }
+      contactForm.reset();
+    } catch {
+      if (msg) {
+        msg.textContent = 'Something went wrong. Please email us at hugstoelders@gmail.com.';
+        msg.className = 'form-note error';
+      }
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
-    contactForm.reset();
-    document.getElementById('donation-group').hidden = true;
-    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-  });
-
-  subscribeForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const msg = document.getElementById('subscribe-message');
-    const email = subscribeForm.querySelector('input[name="email"]').value;
-
-    const subject = encodeURIComponent('Newsletter Subscription Request');
-    const body = encodeURIComponent(`Please subscribe this email to the H2E monthly newsletter:\n\n${email}`);
-    window.location.href = `mailto:hugstoelders@gmail.com?subject=${subject}&body=${body}`;
-
-    if (msg) {
-      msg.textContent = 'Thanks! We\'ll add you to our newsletter list.';
-      msg.className = 'form-note success';
-    }
-    subscribeForm.reset();
   });
 }
 
 // ===== Footer Year =====
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ===== Init =====
 initPageReveal();
 initScrollReveal();
 renderBoard();
 renderHomePhotos();
-renderGalleryPreview();
-loadNewslettersFromFirebase();
+loadHomeNewsletter();
 initNav();
-initDonationToggle();
 initForms();

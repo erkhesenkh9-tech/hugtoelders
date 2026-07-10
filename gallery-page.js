@@ -45,6 +45,7 @@ function registerRevealElements(root = document) {
     el.classList.add('reveal');
 
     if (el.matches('.gallery-item')) {
+      el.classList.add('reveal-zoom');
       const siblings = el.parentElement?.querySelectorAll(':scope > .reveal:not(.is-visible)') || [];
       const index = Array.from(siblings).indexOf(el);
       el.style.setProperty('--reveal-delay', `${index * 0.1}s`);
