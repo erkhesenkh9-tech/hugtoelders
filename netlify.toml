@@ -2,10 +2,10 @@
   command = "node scripts/generate-firebase-config.js"
   publish = "."
 
-[[redirects]]
-  from = "/firebase-config.js"
-  to = "/js/firebase-setup.js"
-  status = 200
+# Firebase client API keys are public in the browser; the build writes them to
+# firebase-config.js on purpose. Tell Netlify not to fail the deploy for that file.
+[build.environment]
+  SECRETS_SCAN_OMIT_PATHS = "firebase-config.js,firebase.public.json"
 
 [[redirects]]
   from = "/admin"

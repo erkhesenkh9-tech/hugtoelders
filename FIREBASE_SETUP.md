@@ -58,6 +58,8 @@ Netlify builds from GitHub. Firebase config is generated at build time from **en
 
 4. Save, then trigger a new deploy (**Deploys** → **Trigger deploy** → **Deploy site**)
 
+If the build still fails with **“Secrets scanning found secrets”**, Netlify is flagging the generated `firebase-config.js` (expected). This repo’s `netlify.toml` already sets `SECRETS_SCAN_OMIT_PATHS` for that file. If needed, also add env var `SECRETS_SCAN_OMIT_PATHS` = `firebase-config.js,firebase.public.json`, then **Clear cache and deploy site**.
+
 ### One-time: authorize Netlify in Firebase
 
 1. [Firebase Console](https://console.firebase.google.com/project/hugtoelders/authentication/settings) → **Authentication** → **Settings** → **Authorized domains**
