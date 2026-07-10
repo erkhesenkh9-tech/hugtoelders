@@ -7,7 +7,7 @@
   <title>Hugs to Elders | H2E</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -33,18 +33,14 @@
     <span class="site-flower sf-4">💮</span>
     <span class="site-flower sf-5">🌸</span>
     <span class="site-flower sf-6">🌷</span>
-    <span class="site-flower sf-7">🌺</span>
+    <span class="site-flower sf-7">💮</span>
     <span class="site-flower sf-8">🌸</span>
-    <span class="site-flower sf-9">💮</span>
-    <span class="site-flower sf-10">🌷</span>
-    <span class="site-flower sf-11">🌸</span>
-    <span class="site-flower sf-12">🌺</span>
   </div>
 
   <header class="site-header">
     <nav class="nav container">
       <a href="#home" class="logo">
-        <span class="logo-icon">🌸</span>
+        <span class="logo-icon">💌</span>
         <span class="logo-text">Hugs to Elders</span>
       </a>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -54,7 +50,7 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#mission">Mission</a></li>
         <li><a href="#board">Our Board</a></li>
-        <li><a href="#newsletters">Newsletters</a></li>
+        <li><a href="newsletters.html">Newsletters</a></li>
         <li><a href="gallery.html">Gallery</a></li>
         <li><a href="#contact" class="nav-cta">Contact & Donate</a></li>
       </ul>
@@ -71,74 +67,91 @@
         <div class="flower flower-4">💮</div>
         <div class="flower flower-5">🌸</div>
         <div class="flower flower-6">🌷</div>
-        <div class="flower flower-7">🌺</div>
-        <div class="flower flower-8">💮</div>
+        <span class="sparkle sparkle-1">✦</span>
+        <span class="sparkle sparkle-2">✦</span>
+        <span class="sparkle sparkle-3">✦</span>
+        <span class="sparkle sparkle-4">✦</span>
+      </div>
+      <div class="petal-fall" aria-hidden="true">
+        <span>🌸</span><span>💮</span><span>🌸</span><span>🌷</span><span>🌸</span><span>💮</span><span>🌸</span>
       </div>
       <div class="container hero-content">
         <p class="hero-tag">Student-Created · Student-Led</p>
-        <h1>Hugs to Elders</h1>
+        <h1>Hugs to <em>Elders</em></h1>
         <p class="hero-subtitle">Bringing warmth, joy, and care to the elderly in our community — one hug at a time.</p>
         <div class="hero-actions">
           <a href="#mission" class="btn btn-primary">Learn About Us</a>
           <a href="#contact" class="btn btn-outline">Get Involved</a>
         </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-num">400+</span>
+            <span class="hero-stat-label">Care packages delivered</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">UCSF &amp; LBFE</span>
+            <span class="hero-stat-label">Featured on GeriNews &amp; Instagram</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">SFPL</span>
+            <span class="hero-stat-label">Hosts library packaging events</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
+    <!-- Marquee -->
+    <div class="flower-marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>🌸 Care Packages ✿ Volunteering 🌷 Letters from H2E ✿ Bake Sales 🌺 Community 💮 Spreading Joy ✿</span>
+        <span>🌸 Care Packages ✿ Volunteering 🌷 Letters from H2E ✿ Bake Sales 🌺 Community 💮 Spreading Joy ✿</span>
+      </div>
+    </div>
 
     <!-- Welcome -->
     <section class="welcome section">
       <div class="container">
-        <div class="welcome-text">
-          <div class="section-flower-accent">🌸</div>
-          <h2>Welcome!</h2>
-          <p>Hello! We are <strong>Hugs to Elders</strong> — a student-created and student-led project made to bring warmth and joy to the elderly in our community through creating care packages for seniors and volunteering.</p>
-          <p>Alongside this, we hope to spread more awareness about issues affecting the elderly community through informative posts and monthly newsletters.</p>
-          <p class="signature">— H2E Team</p>
-        </div>
+        <div class="welcome-layout">
+          <div class="welcome-text" data-reveal="left">
+            <span class="section-label">Who We Are</span>
+            <h2>Welcome!</h2>
+            <p>Hello! We are <strong>Hugs to Elders</strong> — a student-created and student-led project made to bring warmth and joy to the elderly in our community through creating care packages for seniors and volunteering.</p>
+            <p>Alongside this, we hope to spread more awareness about issues affecting the elderly community through informative posts and monthly newsletters.</p>
+            <p class="signature">— H2E Team</p>
+            <a href="https://www.instagram.com/hugstoelders/" target="_blank" rel="noopener noreferrer" class="instagram-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              Follow us @hugstoelders
+            </a>
+          </div>
 
-        <div id="welcome-photos" class="welcome-photo-grid" aria-live="polite">
-          <p class="gallery-loading">Loading photos…</p>
+          <div id="welcome-photos" class="welcome-photo-grid" aria-live="polite">
+            <p class="gallery-loading">Loading photos…</p>
+          </div>
         </div>
-
-        <div class="welcome-impact reveal">
-          <p>In September, we delivered our first-ever batch of <strong>50+ care packages</strong> to UCSF senior patients, each containing hygiene items, comfort goodies, and handwritten notes.</p>
-          <p>Thank you to the Acute Care for Elders Team for helping us deliver these packages.</p>
-        </div>
-
-        <a href="https://www.instagram.com/hugstoelders/" target="_blank" rel="noopener noreferrer" class="instagram-link reveal">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          Follow us @hugstoelders
-        </a>
 
         <div class="welcome-coming-soon">
-          <h3 class="coming-soon-title reveal">Coming Soon!</h3>
+          <a href="gallery.html" class="coming-soon-title reveal">Gallery Walk ⬇️</a>
           <div id="coming-soon-photos" class="coming-soon-grid" aria-live="polite"></div>
         </div>
       </div>
     </section>
 
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
-
-    <!-- Latest Newsletters on Home -->
-    <section id="home-newsletters" class="home-newsletters section">
+    <!-- Latest Newsletter (home preview) -->
+    <section id="newsletter-preview" class="home-newsletters section">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Latest Updates</span>
-          <h2>Recent Newsletters</h2>
-          <p class="section-desc">Our three most recent monthly updates from the H2E team.</p>
+          <span class="section-label">Stay Updated</span>
+          <h2>Latest Newsletter</h2>
+          <p class="section-desc">Our most recent monthly update — past issues are in the archive.</p>
         </div>
-        <div class="newsletter-grid" id="home-newsletter-grid">
-          <p class="newsletter-loading">Loading newsletters...</p>
+        <div class="home-newsletter-preview" id="home-newsletter-preview" aria-live="polite">
+          <p class="newsletter-loading">Loading newsletter…</p>
         </div>
         <div class="home-newsletters-cta">
-          <a href="#newsletters" class="btn btn-outline">View All Newsletters</a>
+          <a href="newsletters.html" class="btn btn-outline">View All Newsletters</a>
         </div>
       </div>
     </section>
-
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
 
     <!-- Mission -->
     <section id="mission" class="mission section">
@@ -149,28 +162,28 @@
           <p class="section-desc">We believe every senior deserves to feel seen, valued, and loved.</p>
         </div>
         <div class="mission-grid">
-          <div class="mission-card">
+          <div class="mission-card" data-reveal="left">
             <div class="mission-photo">
               <img src="images/home/care-packages-seniors.jpg" alt="Care Packages for Seniors" loading="lazy">
             </div>
             <h3>Care Packages</h3>
             <p>We assemble and deliver thoughtful care packages filled with hygiene items, comfort goodies, and handwritten notes to seniors in need.</p>
           </div>
-          <div class="mission-card">
+          <div class="mission-card" data-reveal="zoom">
             <div class="mission-photo">
               <img src="images/home/bracelet-making.jpg" alt="Volunteering with seniors" loading="lazy">
             </div>
             <h3>Volunteering</h3>
             <p>From bracelet-making to origami sessions, we organize events that connect students with seniors and create lasting intergenerational bonds.</p>
           </div>
-          <div class="mission-card">
+          <div class="mission-card" data-reveal="zoom">
             <div class="mission-photo">
               <img src="images/home/ucsf-gerinews.jpg" alt="Featured in UCSF GeriNews" loading="lazy">
             </div>
             <h3>Awareness</h3>
             <p>Through social media, newsletters, and community outreach, we educate others about the challenges facing the elderly community.</p>
           </div>
-          <div class="mission-card">
+          <div class="mission-card" data-reveal="right">
             <div class="mission-photo">
               <img src="images/home/letters-from-h2e.jpg" alt="Letters from H2E" loading="lazy">
             </div>
@@ -178,7 +191,7 @@
             <p>Handwritten letters and cards bring personal warmth and connection directly to seniors who may feel isolated or alone.</p>
           </div>
         </div>
-        <div class="mission-story">
+        <div class="mission-story" data-reveal="blur">
           <h3>Our Story</h3>
           <p>In September, we delivered our first-ever batch of 50+ care packages to UCSF senior patients. Each package contained hygiene items, comfort goodies, and a handwritten note from our team. We are grateful to the Acute Care for Elders Team for helping us deliver these packages and for featuring our work in UCSF GeriNews.</p>
           <p>What started as a small student initiative has grown into a movement of compassion — bake sales, letter-making events, and volunteer days that bring our community together for a cause we deeply believe in.</p>
@@ -186,67 +199,19 @@
       </div>
     </section>
 
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
-
     <!-- Board -->
     <section id="board" class="board section">
       <div class="container">
         <div class="section-header">
           <span class="section-label">Leadership</span>
           <h2>Our Board</h2>
-          <p class="section-desc">Meet our 2025-2026 Board Members!</p>
+          <p class="section-desc">Meet our Board Members!</p>
         </div>
-        <div class="board-grid" id="board-grid">
+        <div class="board-groups" id="board-groups">
           <!-- Populated by JS -->
         </div>
       </div>
     </section>
-
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
-
-    <!-- Newsletters -->
-    <section id="newsletters" class="newsletters section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label">Stay Updated</span>
-          <h2>Monthly Newsletters</h2>
-          <p class="section-desc">Catch up on our latest events, impact stories, and upcoming opportunities.</p>
-        </div>
-        <div class="newsletter-grid" id="newsletter-grid">
-          <p class="newsletter-loading">Loading newsletters...</p>
-        </div>
-        <div class="newsletter-subscribe">
-          <h3>Subscribe to Our Newsletter</h3>
-          <p>Get our monthly updates delivered straight to your inbox.</p>
-          <form class="subscribe-form" id="subscribe-form">
-            <input type="email" name="email" placeholder="Your email address" required aria-label="Email for newsletter subscription">
-            <button type="submit" class="btn btn-primary">Subscribe</button>
-          </form>
-          <p class="form-note" id="subscribe-message" role="status"></p>
-        </div>
-      </div>
-    </section>
-
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
-
-    <!-- Gallery Preview -->
-    <section id="gallery" class="gallery section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label">Moments</span>
-          <h2>Photo Gallery</h2>
-          <p class="section-desc">A glimpse of our events, bake sales, and volunteer days.</p>
-        </div>
-        <div id="gallery-preview" class="gallery-preview" aria-live="polite">
-          <p class="gallery-loading">Loading photos…</p>
-        </div>
-        <div class="gallery-cta">
-          <a href="gallery.html" class="btn btn-outline">View Full Gallery</a>
-        </div>
-      </div>
-    </section>
-
-    <div class="flower-divider" aria-hidden="true"><span>🌸</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌷</span></div>
 
     <!-- Contact & Donate -->
     <section id="contact" class="contact section">
@@ -258,7 +223,7 @@
         </div>
         <div class="contact-grid">
           <div class="contact-info">
-            <div class="info-card">
+            <div class="info-card" data-reveal="left">
               <h3>Get in Touch</h3>
               <ul class="contact-list">
                 <li>
@@ -271,7 +236,7 @@
                 </li>
               </ul>
             </div>
-            <div class="info-card donate-info">
+            <div class="info-card donate-info" data-reveal="left">
               <h3>Support Our Cause</h3>
               <p>Your donation helps us purchase supplies for care packages, fund volunteer events, and reach more seniors in our community. Every contribution makes a difference.</p>
               <ul class="donate-uses">
@@ -281,7 +246,7 @@
               </ul>
             </div>
           </div>
-          <form class="contact-form" id="contact-form">
+          <form class="contact-form" id="contact-form" data-reveal="right">
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Full Name</label>
@@ -327,7 +292,6 @@
   <footer class="site-footer">
     <div class="container footer-content">
       <div class="footer-brand">
-        <span class="logo-icon">🌸</span>
         <span>Hugs to Elders</span>
       </div>
       <p class="footer-tagline">Spreading warmth & joy to seniors, one hug at a time.</p>
@@ -341,9 +305,8 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
+  <script src="js/firebase-setup.js"></script>
   <script src="js/home.js"></script>
-  <script src="js/gallery.js"></script>
   <script src="js/newsletters.js"></script>
   <script src="script.js"></script>
 </body>

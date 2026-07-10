@@ -1,5 +1,5 @@
 /**
- * Generates firebase-config.js for local dev and Netlify builds.
+ * Generates js/firebase-setup.js for local dev and Netlify builds.
  * Source: firebase.public.json (safe to commit — Firebase client keys are public).
  */
 const fs = require('fs');
@@ -7,7 +7,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const sourcePath = path.join(ROOT, 'firebase.public.json');
-const outPath = path.join(ROOT, 'firebase-config.js');
+const outPath = path.join(ROOT, 'js', 'firebase-setup.js');
 
 const raw = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 const { adminEmails, ...firebaseConfig } = raw;
@@ -24,4 +24,4 @@ window.adminEmails = ${JSON.stringify(adminEmails, null, 2)};
 `;
 
 fs.writeFileSync(outPath, contents);
-console.log('Wrote firebase-config.js');
+console.log('Wrote js/firebase-setup.js');
