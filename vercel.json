@@ -1,0 +1,10 @@
+{
+  "buildCommand": "node scripts/generate-firebase-config.js",
+  "outputDirectory": ".",
+  "framework": null,
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/gallery", "destination": "/gallery.html" },
+    { "source": "/newsletters", "destination": "/newsletters.html" }
+  ]
+}

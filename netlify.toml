@@ -21,6 +21,3 @@
   from = "/newsletters"
   to = "/newsletters.html"
   status = 200
-
-# Contact form submissions → configure email to hugstoelders@gmail.com in
-# Netlify → Forms → Form notifications → Add notification → Email notification

@@ -332,26 +332,29 @@ function initForms() {
     if (submitBtn) submitBtn.disabled = true;
 
     const formData = new FormData(contactForm);
-    const interest = formData.get('subject');
-    formData.set('interest', SUBJECT_LABELS[interest] || interest);
+    const payload = Object.fromEntries(formData);
+    payload.interest = SUBJECT_LABELS[payload.subject] || payload.subject;
 
     try {
-      const response = await fetch('/', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString()
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
 
-      if (!response.ok) throw new Error('Submit failed');
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Submit failed');
 
       if (msg) {
         msg.textContent = 'Thanks! Your message was sent — we\'ll get back to you soon.';
         msg.className = 'form-note success';
       }
       contactForm.reset();
-    } catch {
+    } catch (err) {
       if (msg) {
-        msg.textContent = 'Something went wrong. Please email us at hugstoelders@gmail.com.';
+        msg.textContent = err.message === 'Submit failed'
+          ? 'Something went wrong. Please email us at hugstoelders@gmail.com.'
+          : (err.message || 'Something went wrong. Please email us at hugstoelders@gmail.com.');
         msg.className = 'form-note error';
       }
     } finally {
