@@ -7,7 +7,10 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const sourcePath = path.join(ROOT, 'firebase.public.json');
-const outPath = path.join(ROOT, 'js', 'firebase-setup.js');
+const outPaths = [
+  path.join(ROOT, 'js', 'firebase-setup.js'),
+  path.join(ROOT, 'firebase-config.js'),
+];
 
 const raw = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 const { adminEmails, ...firebaseConfig } = raw;
@@ -23,5 +26,5 @@ window.firebaseConfig = ${JSON.stringify(firebaseConfig, null, 2)};
 window.adminEmails = ${JSON.stringify(adminEmails, null, 2)};
 `;
 
-fs.writeFileSync(outPath, contents);
-console.log('Wrote js/firebase-setup.js');
+outPaths.forEach((outPath) => fs.writeFileSync(outPath, contents));
+console.log('Wrote js/firebase-setup.js and firebase-config.js');

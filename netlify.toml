@@ -3,6 +3,11 @@
   publish = "."
 
 [[redirects]]
+  from = "/firebase-config.js"
+  to = "/js/firebase-setup.js"
+  status = 200
+
+[[redirects]]
   from = "/admin"
   to = "/admin.html"
   status = 200
