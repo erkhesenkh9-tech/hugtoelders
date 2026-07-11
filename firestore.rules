@@ -9,10 +9,11 @@ service cloud.firestore {
 
     // Keep this list in sync with adminEmails in firebase.public.json
     function isAdmin() {
-      return isSignedIn() && request.auth.token.email in [
-        'hugstoelders@gmail.com',
-        'erkhesenkh9@gmail.com'
-      ];
+      return isSignedIn()
+        && request.auth.token.email.lower() in [
+          'hugstoelders@gmail.com',
+          'erkhesenkh9@gmail.com'
+        ];
     }
 
     match /newsletters/{newsletterId} {

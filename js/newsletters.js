@@ -19,8 +19,11 @@
       firebase.initializeApp(config);
     }
 
+    const db = firebase.firestore();
+    db.settings({ ignoreUndefinedProperties: true });
+
     return {
-      db: firebase.firestore(),
+      db,
       auth: firebase.auth()
     };
   }

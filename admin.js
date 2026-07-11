@@ -15,6 +15,19 @@
 
   let firebaseServices = null;
 
+  const REQUEST_TIMEOUT_MS = 20000;
+
+  function withTimeout(promise, label) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error(`${label} timed out. Check your connection and try again.`));
+        }, REQUEST_TIMEOUT_MS);
+      })
+    ]);
+  }
+
   function showMessage(el, text, type) {
     if (!el) return;
     el.textContent = text;
@@ -47,7 +60,10 @@
     adminList.innerHTML = '<p class="newsletter-loading">Loading...</p>';
 
     try {
-      const items = await fetchAllNewsletters(firebaseServices.db);
+      const items = await withTimeout(
+        fetchAllNewsletters(firebaseServices.db),
+        'Loading newsletters'
+      );
 
       if (!items.length) {
         adminList.innerHTML = '<p class="newsletter-empty">No newsletters published yet.</p>';
@@ -115,14 +131,26 @@
       title: document.getElementById('nl-title').value.trim(),
       excerpt: document.getElementById('nl-excerpt').value.trim(),
       link: document.getElementById('nl-link').value.trim(),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: firebase.firestore.Timestamp.now()
     };
 
+    if (!data.link.startsWith('http://') && !data.link.startsWith('https://')) {
+      showMessage(publishMessage, 'Link must start with http:// or https://', 'error');
+      publishBtn.disabled = false;
+      return;
+    }
+
     try {
-      await firebaseServices.db.collection('newsletters').add(data);
+      const user = firebaseServices.auth.currentUser;
+      if (user) await user.getIdToken(true);
+
+      await withTimeout(
+        firebaseServices.db.collection('newsletters').add(data),
+        'Publishing'
+      );
       showMessage(publishMessage, 'Published! It will appear on the home page (newest) and past issues stay in the archive.', 'success');
       newsletterForm.reset();
-      setTimeout(loadAdminNewsletters, 1500);
+      loadAdminNewsletters();
     } catch (err) {
       console.error(err);
       if (err.code === 'permission-denied') {
@@ -153,7 +181,10 @@
     btn.textContent = 'Deleting…';
 
     try {
-      await firebaseServices.db.collection('newsletters').doc(id).delete();
+      await withTimeout(
+        firebaseServices.db.collection('newsletters').doc(id).delete(),
+        'Deleting newsletter'
+      );
       itemEl?.remove();
       if (!adminList.querySelector('.admin-newsletter-item')) {
         adminList.innerHTML = '<p class="newsletter-empty">No newsletters published yet.</p>';
