@@ -20,12 +20,60 @@
     }
 
     const db = firebase.firestore();
-    db.settings({ ignoreUndefinedProperties: true });
+    db.settings({
+      ignoreUndefinedProperties: true,
+      experimentalForceLongPolling: true
+    });
 
     return {
       db,
       auth: firebase.auth()
     };
+  }
+
+  function sortNewsletters(items) {
+    return items.sort((a, b) => {
+      const aTime = a.createdAt?.toMillis?.() ?? 0;
+      const bTime = b.createdAt?.toMillis?.() ?? 0;
+      return bTime - aTime;
+    });
+  }
+
+  function mapNewsletterDocs(snapshot) {
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  }
+
+  async function fetchAllNewsletters(db) {
+    try {
+      const snapshot = await db
+        .collection('newsletters')
+        .orderBy('createdAt', 'desc')
+        .get();
+      return mapNewsletterDocs(snapshot);
+    } catch (err) {
+      if (err.code === 'failed-precondition' || err.code === 'permission-denied') {
+        throw err;
+      }
+      const snapshot = await db.collection('newsletters').get();
+      return sortNewsletters(mapNewsletterDocs(snapshot));
+    }
+  }
+
+  async function fetchLatestNewsletters(db, limit) {
+    try {
+      const snapshot = await db
+        .collection('newsletters')
+        .orderBy('createdAt', 'desc')
+        .limit(limit)
+        .get();
+      return mapNewsletterDocs(snapshot);
+    } catch (err) {
+      const all = await fetchAllNewsletters(db);
+      return all.slice(0, limit);
+    }
   }
 
   function escapeHtml(text) {
@@ -66,31 +114,6 @@
     }
 
     container.innerHTML = items.map(formatNewsletterCard).join('');
-  }
-
-  async function fetchLatestNewsletters(db, limit) {
-    const snapshot = await db
-      .collection('newsletters')
-      .orderBy('createdAt', 'desc')
-      .limit(limit)
-      .get();
-
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-  }
-
-  async function fetchAllNewsletters(db) {
-    const snapshot = await db
-      .collection('newsletters')
-      .orderBy('createdAt', 'desc')
-      .get();
-
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data()
-    }));
   }
 
   /** All newsletters except the newest (shown on the home page). */

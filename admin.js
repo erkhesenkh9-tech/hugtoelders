@@ -54,6 +54,17 @@
     loadAdminNewsletters();
   }
 
+  function formatFirestoreError(err) {
+    if (!err) return 'Unknown error';
+    if (err.code === 'permission-denied') {
+      return 'Permission denied. Redeploy firestore.rules and confirm your email is an admin.';
+    }
+    if (err.code === 'failed-precondition') {
+      return 'Firestore index missing. Run: firebase deploy --only firestore:indexes';
+    }
+    return err.message || String(err);
+  }
+
   async function loadAdminNewsletters() {
     if (!firebaseServices) return;
 
@@ -83,7 +94,7 @@
       `).join('');
     } catch (err) {
       console.error(err);
-      adminList.innerHTML = '<p class="newsletter-error">Could not load newsletters. Check your Firebase setup.</p>';
+      adminList.innerHTML = `<p class="newsletter-error">Could not load newsletters: ${escapeHtml(formatFirestoreError(err))}</p>`;
     }
   }
 
@@ -142,7 +153,9 @@
 
     try {
       const user = firebaseServices.auth.currentUser;
-      if (user) await user.getIdToken(true);
+      if (user) {
+        await withTimeout(user.getIdToken(false), 'Checking login');
+      }
 
       await withTimeout(
         firebaseServices.db.collection('newsletters').add(data),
@@ -154,9 +167,9 @@
     } catch (err) {
       console.error(err);
       if (err.code === 'permission-denied') {
-        showMessage(publishMessage, 'Permission denied. Make sure your email is in firestore.rules and you are signed in.', 'error');
+        showMessage(publishMessage, formatFirestoreError(err), 'error');
       } else {
-        showMessage(publishMessage, err.message || 'Failed to publish newsletter.', 'error');
+        showMessage(publishMessage, formatFirestoreError(err), 'error');
       }
     } finally {
       publishBtn.disabled = false;
