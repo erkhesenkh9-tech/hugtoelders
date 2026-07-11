@@ -267,27 +267,28 @@ async function renderHomePhotos() {
 // ===== Load Latest Newsletter on Home =====
 async function loadHomeNewsletter() {
   const preview = document.getElementById('home-newsletter-preview');
-  const { getConfig, initFirebase, fetchLatestNewsletters, renderNewsletterGrid, HOME_DISPLAY, withTimeout } = window.H2ENewsletters;
-
   if (!preview || !window.H2ENewsletters) return;
 
-  if (!getConfig()) {
-    preview.innerHTML = '<p class="newsletter-empty">Newsletters will appear here once Firebase is connected.</p>';
-    return;
-  }
-
-  const services = initFirebase();
-  if (!services) {
-    preview.innerHTML = '<p class="newsletter-error">Could not connect to Firebase.</p>';
-    return;
-  }
+  const { getConfig, initFirebase, fetchLatestNewsletters, renderNewsletterGrid, HOME_DISPLAY, withTimeout } = window.H2ENewsletters;
 
   try {
+    if (!getConfig()) {
+      preview.innerHTML = '<p class="newsletter-empty">Newsletters will appear here once Firebase is connected.</p>';
+      return;
+    }
+
+    const services = initFirebase();
+    if (!services) {
+      preview.innerHTML = '<p class="newsletter-error">Could not connect to Firebase. Check firebase-config.js on your live site.</p>';
+      return;
+    }
+
     const items = await withTimeout(
       fetchLatestNewsletters(services.db, HOME_DISPLAY),
-      20000,
+      15000,
       'Loading newsletter'
     );
+
     renderNewsletterGrid(preview, items);
     preview.querySelectorAll('.newsletter-card').forEach((card) => {
       card.classList.add('reveal', 'is-visible');
@@ -378,6 +379,12 @@ initPageReveal();
 initScrollReveal();
 renderBoard();
 renderHomePhotos();
-loadHomeNewsletter();
+loadHomeNewsletter().catch((err) => {
+  console.error('loadHomeNewsletter failed:', err);
+  const preview = document.getElementById('home-newsletter-preview');
+  if (preview) {
+    preview.innerHTML = '<p class="newsletter-error">Could not load newsletter. Please refresh the page.</p>';
+  }
+});
 initNav();
 initForms();

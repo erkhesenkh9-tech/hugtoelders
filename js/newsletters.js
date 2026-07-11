@@ -16,23 +16,29 @@
     const config = getConfig();
     if (!config) return null;
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(config);
+      }
 
-    const db = firebase.firestore();
-    if (!firestoreSettingsApplied) {
-      db.settings({
-        ignoreUndefinedProperties: true,
-        experimentalForceLongPolling: true
-      });
-      firestoreSettingsApplied = true;
-    }
+      const db = firebase.firestore();
+      if (!firestoreSettingsApplied) {
+        try {
+          db.settings({
+            ignoreUndefinedProperties: true,
+            experimentalForceLongPolling: true
+          });
+        } catch (settingsErr) {
+          console.warn('Firestore settings already applied:', settingsErr);
+        }
+        firestoreSettingsApplied = true;
+      }
 
-    return {
-      db,
-      auth: firebase.auth()
-    };
+      return { db, auth: firebase.auth() };
+    } catch (err) {
+      console.error('Firebase init failed:', err);
+      return null;
+    }
   }
 
   function withTimeout(promise, ms, label) {
@@ -62,36 +68,11 @@
   }
 
   async function fetchAllNewsletters(db) {
-    try {
-      const snapshot = await db
-        .collection('newsletters')
-        .orderBy('createdAt', 'desc')
-        .get();
-      return mapNewsletterDocs(snapshot);
-    } catch (err) {
-      if (err.code === 'failed-precondition' || err.code === 'permission-denied') {
-        throw err;
-      }
-      const snapshot = await db.collection('newsletters').get();
-      return sortNewsletters(mapNewsletterDocs(snapshot));
-    }
+    const snapshot = await db.collection('newsletters').get();
+    return sortNewsletters(mapNewsletterDocs(snapshot));
   }
 
   async function fetchLatestNewsletters(db, limit) {
-    try {
-      const snapshot = await db
-        .collection('newsletters')
-        .orderBy('createdAt', 'desc')
-        .limit(limit)
-        .get();
-      const items = mapNewsletterDocs(snapshot);
-      if (items.length) return items;
-    } catch (err) {
-      if (err.code === 'failed-precondition' || err.code === 'permission-denied') {
-        throw err;
-      }
-    }
-
     const all = await fetchAllNewsletters(db);
     return all.slice(0, limit);
   }
