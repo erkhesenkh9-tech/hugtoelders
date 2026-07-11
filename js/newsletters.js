@@ -3,6 +3,7 @@
  */
 (function () {
   const HOME_DISPLAY = 1;
+  let firestoreSettingsApplied = false;
 
   function getConfig() {
     if (!window.firebaseConfig || window.firebaseConfig.apiKey === 'YOUR_API_KEY') {
@@ -20,15 +21,29 @@
     }
 
     const db = firebase.firestore();
-    db.settings({
-      ignoreUndefinedProperties: true,
-      experimentalForceLongPolling: true
-    });
+    if (!firestoreSettingsApplied) {
+      db.settings({
+        ignoreUndefinedProperties: true,
+        experimentalForceLongPolling: true
+      });
+      firestoreSettingsApplied = true;
+    }
 
     return {
       db,
       auth: firebase.auth()
     };
+  }
+
+  function withTimeout(promise, ms, label) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error(`${label} timed out. Please refresh and try again.`));
+        }, ms);
+      })
+    ]);
   }
 
   function sortNewsletters(items) {
@@ -69,11 +84,16 @@
         .orderBy('createdAt', 'desc')
         .limit(limit)
         .get();
-      return mapNewsletterDocs(snapshot);
+      const items = mapNewsletterDocs(snapshot);
+      if (items.length) return items;
     } catch (err) {
-      const all = await fetchAllNewsletters(db);
-      return all.slice(0, limit);
+      if (err.code === 'failed-precondition' || err.code === 'permission-denied') {
+        throw err;
+      }
     }
+
+    const all = await fetchAllNewsletters(db);
+    return all.slice(0, limit);
   }
 
   function escapeHtml(text) {
@@ -136,6 +156,7 @@
     fetchArchiveNewsletters,
     renderNewsletterGrid,
     isAdminEmail,
-    escapeHtml
+    escapeHtml,
+    withTimeout
   };
 })();
