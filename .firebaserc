@@ -1,7 +1,6 @@
 {
   "projects": {
-    "default": "hugstoelders",
-    "y": "hugtoelders"
+    "default": "hugtoelders"
   },
   "targets": {},
   "etags": {}

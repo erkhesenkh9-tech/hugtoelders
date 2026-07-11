@@ -22,9 +22,9 @@ Student-led nonprofit website for **Hugs to Elders (H2E)** — care packages, vo
 | Variable | Value |
 |----------|--------|
 | `FIREBASE_API_KEY` | Your Firebase `apiKey` |
-| `FIREBASE_AUTH_DOMAIN` | `hugstoelders.firebaseapp.com` |
-| `FIREBASE_PROJECT_ID` | `hugstoelders` |
-| `FIREBASE_STORAGE_BUCKET` | `hugstoelders.firebasestorage.app` |
+| `FIREBASE_AUTH_DOMAIN` | `hugtoelders.firebaseapp.com` |
+| `FIREBASE_PROJECT_ID` | `hugtoelders` |
+| `FIREBASE_STORAGE_BUCKET` | `hugtoelders.firebasestorage.app` |
 | `FIREBASE_MESSAGING_SENDER_ID` | `1067330771792` |
 | `FIREBASE_APP_ID` | `1:1067330771792:web:f2378f74f9f280053c6a55` |
 | `FIREBASE_ADMIN_EMAILS` | `hugstoelders@gmail.com,erkhesenkh9@gmail.com` |

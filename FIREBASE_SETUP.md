@@ -44,7 +44,7 @@ Netlify builds from GitHub. Firebase config is generated at build time from **en
 
 1. Open [Netlify](https://app.netlify.com/) → your **hugtoelders** site
 2. Go to **Site configuration** → **Environment variables** → **Add a variable**
-3. Add each of these (copy values from Firebase Console → Project settings → Your apps):
+3. Add each of these — **copy exact values from Firebase Console → Project settings → Your apps** (project ID is `hugtoelders`, not `hugstoelders`):
 
 | Variable | Value |
 |----------|--------|
