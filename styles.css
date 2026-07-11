@@ -58,6 +58,9 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + var(--header-gap) + 18px);
+  overflow-x: clip;
+  max-width: 100%;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -65,9 +68,17 @@ body {
   color: var(--text);
   background: var(--pink-25);
   line-height: 1.7;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+  overscroll-behavior-x: none;
+  touch-action: pan-y pinch-zoom;
   padding-top: calc(var(--header-h) + var(--header-gap));
   -webkit-font-smoothing: antialiased;
+}
+
+main {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body.is-loading {
@@ -1003,6 +1014,8 @@ a:hover {
 .welcome-coming-soon {
   padding-top: 0.5rem;
   text-align: center;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .coming-soon-title {
@@ -1035,6 +1048,9 @@ a:hover {
   grid-auto-columns: 235px;
   gap: 1.1rem;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  max-width: 100%;
   padding: 0.25rem 0.25rem 1.25rem;
   scroll-snap-type: x mandatory;
   scrollbar-color: var(--pink-300) var(--pink-50);
@@ -2040,6 +2056,28 @@ a:hover {
 }
 
 @media (max-width: 720px) {
+  .site-header,
+  .site-header.header-visible {
+    left: 3vw;
+    right: 3vw;
+    width: auto;
+    transform: none;
+  }
+
+  .flower-marquee {
+    transform: none;
+    margin-inline: 0;
+  }
+
+  .reveal.reveal-left,
+  .reveal.reveal-right {
+    transform: translateY(44px);
+  }
+
+  .reveal.reveal-tilt {
+    transform: translateY(36px);
+  }
+
   .hero {
     min-height: auto;
     padding: 3.5rem 0 4.5rem;
