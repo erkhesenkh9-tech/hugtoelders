@@ -265,6 +265,16 @@ async function renderHomePhotos() {
 }
 
 // ===== Load Latest Newsletter on Home =====
+async function fetchNewslettersFromApi({ limit = 1, skip = 0 } = {}) {
+  const params = new URLSearchParams({ limit: String(limit), skip: String(skip) });
+  const response = await fetch(`/api/newsletters?${params}`);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || 'Could not load newsletters from the server');
+  }
+  return data.items || [];
+}
+
 async function loadHomeNewsletter() {
   const preview = document.getElementById('home-newsletter-preview');
   if (!preview || !window.H2ENewsletters) return;
@@ -277,17 +287,22 @@ async function loadHomeNewsletter() {
       return;
     }
 
-    const services = initFirebase();
-    if (!services) {
-      preview.innerHTML = '<p class="newsletter-error">Could not connect to Firebase. Check firebase-config.js on your live site.</p>';
-      return;
-    }
+    let items = [];
 
-    const items = await withTimeout(
-      fetchLatestNewsletters(services.db, HOME_DISPLAY),
-      15000,
-      'Loading newsletter'
-    );
+    try {
+      items = await withTimeout(fetchNewslettersFromApi({ limit: HOME_DISPLAY }), 12000, 'Loading newsletter');
+    } catch (apiErr) {
+      console.warn('Newsletter API failed, trying Firestore directly:', apiErr);
+      const services = initFirebase();
+      if (!services) {
+        throw new Error('Could not connect to Firebase. Check your Vercel environment variables.');
+      }
+      items = await withTimeout(
+        fetchLatestNewsletters(services.db, HOME_DISPLAY),
+        12000,
+        'Loading newsletter'
+      );
+    }
 
     renderNewsletterGrid(preview, items);
     preview.querySelectorAll('.newsletter-card').forEach((card) => {

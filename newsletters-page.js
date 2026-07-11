@@ -97,7 +97,7 @@ function initSubscribeForm() {
 
 async function loadNewsletters() {
   const grid = document.getElementById('newsletter-grid');
-  const { getConfig, initFirebase, fetchArchiveNewsletters, renderNewsletterGrid, withTimeout } = window.H2ENewsletters;
+  const { getConfig, initFirebase, fetchArchiveNewsletters, renderNewsletterGrid, withTimeout, HOME_DISPLAY } = window.H2ENewsletters;
 
   const showError = (message) => {
     if (grid) grid.innerHTML = `<p class="newsletter-error">${message}</p>`;
@@ -110,18 +110,31 @@ async function loadNewsletters() {
     return;
   }
 
-  const services = initFirebase();
-  if (!services) {
-    showError('Could not connect to Firebase.');
-    return;
-  }
-
   try {
-    const items = await withTimeout(fetchArchiveNewsletters(services.db), 20000, 'Loading newsletters');
+    let items = [];
+
+    try {
+      items = await withTimeout(
+        fetch(`/api/newsletters?limit=50&skip=${HOME_DISPLAY}`).then(async (res) => {
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'Could not load newsletters');
+          return data.items || [];
+        }),
+        12000,
+        'Loading newsletters'
+      );
+    } catch (apiErr) {
+      console.warn('Newsletter API failed, trying Firestore directly:', apiErr);
+      const services = initFirebase();
+      if (!services) throw new Error('Could not connect to Firebase.');
+      items = await withTimeout(fetchArchiveNewsletters(services.db), 12000, 'Loading newsletters');
+    }
+
     if (!items.length) {
       grid.innerHTML = '<p class="newsletter-empty">No past newsletters yet. The latest issue is featured on the home page.</p>';
       return;
     }
+
     renderNewsletterGrid(grid, items);
     grid.querySelectorAll('.newsletter-card').forEach((card) => {
       card.classList.add('reveal', 'is-visible');
