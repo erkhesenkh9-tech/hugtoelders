@@ -55,8 +55,11 @@
       }
 
       adminList.innerHTML = items.map((item) => `
-        <article class="admin-newsletter-item">
-          <p class="meta">${escapeHtml(item.dateLabel)}</p>
+        <article class="admin-newsletter-item" data-id="${escapeHtml(item.id)}">
+          <div class="admin-newsletter-item-header">
+            <p class="meta">${escapeHtml(item.dateLabel)}</p>
+            <button type="button" class="btn btn-delete" data-delete-id="${escapeHtml(item.id)}" aria-label="Delete ${escapeHtml(item.title)}">Delete</button>
+          </div>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.excerpt)}</p>
           <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">View link →</a>
@@ -134,6 +137,37 @@
 
   logoutBtn?.addEventListener('click', async () => {
     await firebaseServices.auth.signOut();
+  });
+
+  adminList?.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-delete-id]');
+    if (!btn || !firebaseServices) return;
+
+    const id = btn.dataset.deleteId;
+    const itemEl = btn.closest('.admin-newsletter-item');
+    const title = itemEl?.querySelector('h3')?.textContent || 'this newsletter';
+
+    if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Deleting…';
+
+    try {
+      await firebaseServices.db.collection('newsletters').doc(id).delete();
+      itemEl?.remove();
+      if (!adminList.querySelector('.admin-newsletter-item')) {
+        adminList.innerHTML = '<p class="newsletter-empty">No newsletters published yet.</p>';
+      }
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'Delete';
+      alert(
+        err.code === 'permission-denied'
+          ? 'Permission denied. Deploy updated Firestore rules: firebase deploy --only firestore:rules'
+          : 'Could not delete newsletter. Try again.'
+      );
+    }
   });
 
   function init() {

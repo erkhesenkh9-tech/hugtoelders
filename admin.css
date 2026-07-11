@@ -95,7 +95,38 @@
   font-size: 0.82rem;
   color: var(--pink-600);
   font-weight: 600;
+  margin-bottom: 0;
+}
+
+.admin-newsletter-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 0.5rem;
+}
+
+.btn-delete {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c0392b;
+  background: #fff;
+  border: 1.5px solid #f0c4c4;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background: #fff5f5;
+  border-color: #e8a0a0;
+}
+
+.btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .admin-newsletter-item p {
